@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商品选择和价格计算</title>
+</head>
+<style>
+    label{
+        display: inline-block;
+        padding-bottom: 30px;
+    }
+</style>
+<body>
+    <h1>商品选择</h1>
+    <div id="productList" >
+        <!-- 商品选项将在这里动态生成 -->
+    </div>
+    <h2>总价格: <span id="totalPrice">0</span></h2>
+    <button id="clearSelectionButton">取消选择</button>
+
+    <script>
+        var productsData = [
+            { name: "青酱盐牛角", price: 13 },
+            { name: "掘金盐牛角", price: 11 },
+            { name: "芝士碱水球", price: 24 },
+            { name: "混合碱水球", price: 18 },
+            { name: "燕麦碱水球", price: 26 },
+            { name: "原味碱水球", price: 28 },
+            { name: "抹茶米面包", price: 16 },
+            { name: "原味米面包", price: 10 },
+            { name: "百香果米面包", price: 15 },
+            { name: "巴斯克布里欧修", price: 16 },
+            { name: "柠檬乳酪布里欧修", price: 10 },
+            { name: "咸黄杨莳萝布里欧修", price: 10 },
+            { name: "抹茶碱水棒", price: 10 },
+            { name: "芋泥碱水棒", price: 12 },
+            { name: "香草可露丽", price: 13 },
+            { name: "红茶司康", price: 10 },
+            { name: "法芙娜巧克力可颂", price: 18 },
+            { name: "可颂", price: 13 },
+            { name: "蓝莓塔塔", price: 16 },
+            { name: "香草苹果颂", price: 18 },
+            { name: "蒜香法棍", price: 16 },
+            { name: "德肠长法棍", price: 22 },
+            { name: "卡仕达猫爪", price: 6 },
+            { name: "日式红豆包", price: 6 },
+            { name: "黑芝麻乳酪贝果", price: 16 },
+            { name: "原味贝果", price: 8 },
+            { name: "双椒牛肉芝士夏巴塔", price: 18 },
+            { name: "双椒夏巴塔", price: 9 },
+            { name: "墨西哥辣椒叶子面包", price: 25 },
+            { name: "斯里兰卡肉桂卷", price: 13 }
+        ];
+
+        function initializePage() {
+            var productList = document.getElementById("productList");
+            var totalPriceElement = document.getElementById("totalPrice");
+            var clearSelectionButton = document.getElementById("clearSelectionButton");
+
+            productsData.forEach(function (product) {
+                var label = document.createElement("label");
+                label.innerHTML = `
+                    <input type="checkbox" name="product" value="${product.name}" data-price="${product.price}">
+                    ${product.name} - ${product.price}
+                `;
+                label.addEventListener("change", calculatePrice);
+                productList.appendChild(label);
+            });
+
+            function calculatePrice() {
+                var checkboxes = document.getElementsByName("product");
+                var totalPrice = 0;
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        totalPrice += parseFloat(checkboxes[i].getAttribute("data-price"));
+                    }
+                }
+
+                totalPriceElement.textContent = totalPrice.toFixed(2); // 以两位小数显示
+            }
+
+            clearSelectionButton.addEventListener("click", function () {
+                var checkboxes = document.getElementsByName("product");
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                totalPriceElement.textContent = "0.00";
+            });
+        }
+
+        initializePage(); // 初始化页面
+    </script>
+</body>
+</html>
